@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" role="img" aria-label="Negev Athletic badge">
+  <rect width="200" height="200" rx="36" fill="#111827"/>
+  <path d="M100 28l60 24v44c0 39-22 62-60 76-38-14-60-37-60-76V52l60-24Z" fill="#F97316"/>
+  <text x="100" y="112" fill="#E5E7EB" font-family="Arial, sans-serif" font-size="42" font-weight="700" text-anchor="middle">NA</text>
+</svg>

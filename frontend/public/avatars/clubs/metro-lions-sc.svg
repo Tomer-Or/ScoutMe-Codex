@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" role="img" aria-label="Metro Lions SC badge">
+  <rect width="200" height="200" rx="36" fill="#141B2D"/>
+  <circle cx="100" cy="100" r="68" fill="#A855F7"/>
+  <circle cx="100" cy="100" r="52" fill="#141B2D"/>
+  <text x="100" y="111" fill="#E5E7EB" font-family="Arial, sans-serif" font-size="42" font-weight="700" text-anchor="middle">ML</text>
+</svg>

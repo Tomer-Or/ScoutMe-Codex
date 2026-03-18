@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" role="img" aria-label="Blue Harbor Academy badge">
+  <rect width="200" height="200" rx="36" fill="#0B1220"/>
+  <circle cx="100" cy="100" r="66" fill="#38BDF8"/>
+  <path d="M68 120c9-18 20-27 32-27s22 8 30 25c-8 8-18 14-30 18-12-5-22-10-32-16Z" fill="#0B1220"/>
+  <text x="100" y="84" fill="#0B1220" font-family="Arial, sans-serif" font-size="36" font-weight="700" text-anchor="middle">BH</text>
+</svg>

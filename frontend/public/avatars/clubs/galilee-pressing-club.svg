@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" role="img" aria-label="Galilee Pressing Club badge">
+  <rect width="200" height="200" rx="36" fill="#111827"/>
+  <path d="M100 28l62 32-24 92H62L38 60l62-32Z" fill="#84CC16"/>
+  <text x="100" y="112" fill="#111827" font-family="Arial, sans-serif" font-size="40" font-weight="700" text-anchor="middle">GP</text>
+</svg>

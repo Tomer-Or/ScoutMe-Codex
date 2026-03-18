@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" role="img" aria-label="Carmel Rising FC badge">
+  <rect width="200" height="200" rx="36" fill="#0F172A"/>
+  <circle cx="100" cy="100" r="68" fill="#10B981"/>
+  <circle cx="100" cy="100" r="50" fill="#0F172A"/>
+  <text x="100" y="110" fill="#E5E7EB" font-family="Arial, sans-serif" font-size="42" font-weight="700" text-anchor="middle">CR</text>
+</svg>

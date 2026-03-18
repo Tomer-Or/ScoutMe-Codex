@@ -1,0 +1,40 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: 244 247 242;
+  --foreground: 15 23 42;
+  --card: 255 255 255;
+  --card-foreground: 15 23 42;
+  --border: 216 226 220;
+  --input: 216 226 220;
+  --primary: 16 185 129;
+  --primary-foreground: 255 255 255;
+  --secondary: 255 255 255;
+  --secondary-foreground: 15 23 42;
+  --muted: 240 245 241;
+  --muted-foreground: 100 116 139;
+  --accent: 16 185 129;
+  --accent-foreground: 255 255 255;
+}
+
+* {
+  @apply border-brand-border;
+}
+
+body {
+  @apply bg-brand-background text-brand-text font-sans antialiased;
+  background-image:
+    radial-gradient(circle at top left, rgba(16, 185, 129, 0.12), transparent 22%),
+    radial-gradient(circle at top right, rgba(45, 212, 191, 0.1), transparent 18%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0)),
+    linear-gradient(180deg, #f4f7f2 0%, #eef5ef 52%, #f7faf6 100%);
+  min-height: 100vh;
+}
+
+a {
+  @apply text-inherit no-underline;
+}
