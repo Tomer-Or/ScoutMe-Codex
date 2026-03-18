@@ -5,6 +5,7 @@ import app.models  # noqa: F401
 from app.config import get_settings
 from app.database import init_db
 from app.routers.auth import router as auth_router
+from app.routers.chat import router as chat_router
 from app.routers.players import router as players_router
 from app.services.seed import seed_database
 
@@ -33,4 +34,5 @@ def health():
 
 
 app.include_router(auth_router)
+app.include_router(chat_router)
 app.include_router(players_router)

@@ -4,6 +4,7 @@ import { MapPin, MessageSquare, Phone, ShieldAlert, Trophy } from "lucide-react"
 import { Avatar } from "@/components/avatar";
 import { CommentBox } from "@/components/comment-box";
 import { EndorseButton } from "@/components/endorse-button";
+import { StartChatButton } from "@/components/start-chat-button";
 import { StatChip } from "@/components/stat-chip";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -54,7 +55,7 @@ export default async function PlayerPage({ params }: { params: { id: string } })
               </div>
               <div className="flex flex-col gap-3 sm:flex-row xl:flex-col">
                 <EndorseButton playerId={player.id} count={player.endorsement_count} />
-                <Button variant="secondary">Message Player (Coming Soon)</Button>
+                <StartChatButton targetUserId={player.user_id} />
               </div>
             </div>
             <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">

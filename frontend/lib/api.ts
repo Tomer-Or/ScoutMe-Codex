@@ -1,4 +1,14 @@
-import type { AuthResponse, FeedItem, PlayerCard, PlayerProfile, PostRecord } from "@/lib/types";
+import type {
+  AuthResponse,
+  ChatMessage,
+  ChatSearchResult,
+  ConversationDetail,
+  ConversationPreview,
+  FeedItem,
+  PlayerCard,
+  PlayerProfile,
+  PostRecord
+} from "@/lib/types";
 
 const API_URL =
   (typeof window === "undefined" ? process.env.API_URL : process.env.NEXT_PUBLIC_API_URL) ??
@@ -38,6 +48,40 @@ export function apiGetPlayers(): Promise<PlayerCard[]> {
 
 export function apiGetFeed(): Promise<FeedItem[]> {
   return request("/feed");
+}
+
+export function apiGetConversations(token: string): Promise<ConversationPreview[]> {
+  return request("/chat/conversations", {
+    headers: { Authorization: `Bearer ${token}` }
+  });
+}
+
+export function apiCreateConversation(token: string, targetUserId: number): Promise<ConversationPreview> {
+  return request("/chat/conversations", {
+    method: "POST",
+    headers: { Authorization: `Bearer ${token}` },
+    body: JSON.stringify({ target_user_id: targetUserId })
+  });
+}
+
+export function apiGetConversation(token: string, conversationId: string): Promise<ConversationDetail> {
+  return request(`/chat/conversations/${conversationId}`, {
+    headers: { Authorization: `Bearer ${token}` }
+  });
+}
+
+export function apiSendMessage(token: string, conversationId: string, content: string): Promise<ChatMessage> {
+  return request(`/chat/conversations/${conversationId}/messages`, {
+    method: "POST",
+    headers: { Authorization: `Bearer ${token}` },
+    body: JSON.stringify({ content })
+  });
+}
+
+export function apiSearchChatUsers(token: string, query: string): Promise<ChatSearchResult[]> {
+  return request(`/chat/search?q=${encodeURIComponent(query)}`, {
+    headers: { Authorization: `Bearer ${token}` }
+  });
 }
 
 export function apiSearchPlayers(searchParams: URLSearchParams): Promise<PlayerCard[]> {

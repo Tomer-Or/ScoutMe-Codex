@@ -14,6 +14,48 @@ export interface AuthResponse {
   user: User;
 }
 
+export interface ConversationPreview {
+  id: number;
+  other_user_id: number;
+  other_user_name: string;
+  other_user_role: UserRole;
+  other_user_avatar_url?: string | null;
+  other_user_position?: string | null;
+  other_user_location?: string | null;
+  last_message: string;
+  last_message_at: string;
+}
+
+export interface ChatSearchResult {
+  user_id: number;
+  name: string;
+  role: UserRole;
+  avatar_url?: string | null;
+  position?: string | null;
+  location?: string | null;
+}
+
+export interface ChatMessage {
+  id: number;
+  sender_user_id: number;
+  sender_name: string;
+  sender_role: UserRole;
+  sender_avatar_url?: string | null;
+  content: string;
+  created_at: string;
+}
+
+export interface ConversationDetail {
+  id: number;
+  other_user_id: number;
+  other_user_name: string;
+  other_user_role: UserRole;
+  other_user_avatar_url?: string | null;
+  other_user_position?: string | null;
+  other_user_location?: string | null;
+  messages: ChatMessage[];
+}
+
 export interface Comment {
   id: number;
   author_user_id: number;

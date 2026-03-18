@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { MessageCircleMore } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/lib/auth";
@@ -29,6 +30,12 @@ export function SiteHeader() {
           <Link href="/dashboard">My Profile</Link>
         </nav>
         <div className="flex items-center gap-3">
+          {!isReady ? null : user ? (
+            <Button variant="ghost" className="flex items-center gap-2" onClick={() => router.push("/chat")}>
+              <MessageCircleMore className="h-5 w-5" />
+              <span className="hidden sm:inline">Chat</span>
+            </Button>
+          ) : null}
           {!isReady ? null : user ? (
             <Button
               variant="ghost"

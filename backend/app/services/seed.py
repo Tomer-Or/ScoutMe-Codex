@@ -1,9 +1,10 @@
-from datetime import date
+from datetime import date, datetime, timedelta, timezone
 
 from sqlmodel import Session, select
 
 from app.auth.security import hash_password
 from app.database import engine
+from app.models.chat import Conversation, Message
 from app.models.comment import Comment
 from app.models.endorsement import Endorsement
 from app.models.player import Achievement, ClubHistory, HighlightVideo, PlayerProfile, PlayerStats
@@ -335,6 +336,39 @@ CLUB_POST_SEEDS = [
     },
 ]
 
+CHAT_SEEDS = [
+    {
+        "participants": ["Noam Levi", "carmel.rising@scoutme.demo"],
+        "messages": [
+            ("carmel.rising@scoutme.demo", "We reviewed your last two midfield clips and liked the tempo control. Are you available to speak this week?"),
+            ("Noam Levi", "Absolutely. I can share full-match footage from the last three league games as well."),
+            ("carmel.rising@scoutme.demo", "Perfect. Send the full-match links when ready, and we will line up a short intro call."),
+        ],
+    },
+    {
+        "participants": ["Ariel Ben-David", "blue.harbor@scoutme.demo"],
+        "messages": [
+            ("blue.harbor@scoutme.demo", "Your one-v-one actions from the right side stood out. We are currently tracking wide players for a summer intake."),
+            ("Ariel Ben-David", "Thanks. I just posted a new game summary and can send another highlight package focused on final-third decisions."),
+        ],
+    },
+    {
+        "participants": ["Daniel Sadeh", "metro.lions@scoutme.demo"],
+        "messages": [
+            ("metro.lions@scoutme.demo", "Strong box command in the recent clips. We would like a longer look at your distribution and starting positions."),
+            ("Daniel Sadeh", "I have two full matches with a higher defensive line. Happy to send both."),
+            ("metro.lions@scoutme.demo", "That would be ideal. We are especially interested in how you manage space behind the back line."),
+        ],
+    },
+    {
+        "participants": ["Shai Turgeman", "negev.athletic@scoutme.demo"],
+        "messages": [
+            ("negev.athletic@scoutme.demo", "We liked the way you scanned before receiving in midfield. Are you open to a trial invitation later this month?"),
+            ("Shai Turgeman", "Yes, definitely. I can also share more recent clips from matches against stronger pressing teams."),
+        ],
+    },
+]
+
 
 def slugify(value: str) -> str:
     return value.lower().replace(" ", "-")
@@ -346,6 +380,10 @@ def player_avatar_path(name: str) -> str:
 
 def club_avatar_path(name: str) -> str:
     return f"/avatars/clubs/{slugify(name)}.svg"
+
+
+def normalize_conversation_pair(user_a_id: int, user_b_id: int) -> tuple[int, int]:
+    return tuple(sorted((user_a_id, user_b_id)))
 
 
 def seed_posts(session: Session, player_profiles: list[PlayerProfile], scout_users: list[User]) -> None:
@@ -392,6 +430,50 @@ def seed_posts(session: Session, player_profiles: list[PlayerProfile], scout_use
     session.commit()
 
 
+def seed_chats(session: Session, player_profiles: list[PlayerProfile], scout_users: list[User]) -> None:
+    existing_message = session.exec(select(Message).limit(1)).first()
+    if existing_message:
+        return
+
+    user_by_key = {profile.full_name: session.get(User, profile.user_id) for profile in player_profiles}
+    user_by_key.update({scout.email: scout for scout in scout_users})
+    base_time = datetime.now(timezone.utc) - timedelta(days=2)
+
+    for conversation_offset, seed in enumerate(CHAT_SEEDS):
+        first_user = user_by_key.get(seed["participants"][0])
+        second_user = user_by_key.get(seed["participants"][1])
+        if not first_user or not second_user:
+            continue
+        participant_one_id, participant_two_id = normalize_conversation_pair(first_user.id, second_user.id)
+        conversation = Conversation(
+            participant_one_id=participant_one_id,
+            participant_two_id=participant_two_id,
+            created_at=base_time + timedelta(hours=conversation_offset * 7),
+            updated_at=base_time + timedelta(hours=conversation_offset * 7),
+        )
+        session.add(conversation)
+        session.commit()
+        session.refresh(conversation)
+
+        for message_offset, (sender_key, content) in enumerate(seed["messages"]):
+            sender = user_by_key.get(sender_key)
+            if not sender:
+                continue
+            created_at = base_time + timedelta(hours=conversation_offset * 7, minutes=message_offset * 18)
+            session.add(
+                Message(
+                    conversation_id=conversation.id,
+                    sender_user_id=sender.id,
+                    content=content,
+                    created_at=created_at,
+                )
+            )
+            conversation.updated_at = created_at
+            session.add(conversation)
+
+        session.commit()
+
+
 def seed_database() -> None:
     with Session(engine) as session:
         existing_demo = session.exec(select(User).where(User.email.endswith("@scoutme.demo"))).first()
@@ -407,6 +489,7 @@ def seed_database() -> None:
                 session.add(profile)
             session.commit()
             seed_posts(session, demo_profiles, scout_users)
+            seed_chats(session, demo_profiles, scout_users)
             return
 
         scout_users: list[User] = []
@@ -514,3 +597,4 @@ def seed_database() -> None:
 
         session.commit()
         seed_posts(session, player_profiles, scout_users)
+        seed_chats(session, player_profiles, scout_users)
